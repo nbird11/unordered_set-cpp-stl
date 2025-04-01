@@ -34,43 +34,46 @@
 
 //#define PRINT_IMPL
 #ifdef PRINT_IMPL
-   #include <iostream>
-   #include <string>
 
-    // Forward declarations
-   template<typename T>
-   void print_impl(const char* names, const T& value);
+#include <iostream>
+#include <string>
 
-   template<typename T, typename... Args>
-   void print_impl(const char* names, const T& value, const Args&... args);
+ // Forward declarations
+template<typename T>
+void print_impl(const char* names, const T& value);
 
-   // Helper function to get next name from comma-separated list
-   inline std::string get_next_name(const char*& names) {
-      while (*names == ' ') ++names;  // Skip leading spaces
-      const char* start = names;
-      while (*names && (*names != ',' || *(names+1) != ' ')) ++names;
-      size_t len = names - start;
-      if (*names) names += 2;  // Skip ", "
-      return std::string(start, len);
-   }
+template<typename T, typename... Args>
+void print_impl(const char* names, const T& value, const Args&... args);
 
-   // Base case for single argument
-   template<typename T>
-   void print_impl(const char* names, const T& value) {
-      std::cout << get_next_name(names) << ": " << value << std::endl;
-   }
+// Helper function to get next name from comma-separated list
+inline std::string get_next_name(const char*& names) {
+   while (*names == ' ') ++names;  // Skip leading spaces
+   const char* start = names;
+   while (*names && (*names != ',' || *(names + 1) != ' ')) ++names;
+   size_t len = names - start;
+   if (*names) names += 2;  // Skip ", "
+   return std::string(start, len);
+}
 
-   // Recursive case for multiple arguments
-   template<typename T, typename... Args>
-   void print_impl(const char* names, const T& value, const Args&... args) {
-      std::cout << get_next_name(names) << ": " << value << ", ";
-      print_impl(names, args...);
-   }
+// Base case for single argument
+template<typename T>
+void print_impl(const char* names, const T& value) {
+   std::cout << get_next_name(names) << ": " << value << std::endl;
+}
 
-   #define print(...) print_impl(#__VA_ARGS__, __VA_ARGS__)
+// Recursive case for multiple arguments
+template<typename T, typename... Args>
+void print_impl(const char* names, const T& value, const Args&... args) {
+   std::cout << get_next_name(names) << ": " << value << ", ";
+   print_impl(names, args...);
+}
+
+#define print(...) print_impl(#__VA_ARGS__, __VA_ARGS__)
+
 #else
-   #define print(...) 
+#define print(...) 
 #endif // PRINT_IMPL
+
 
 #include <iostream>  // for std::cerr
 #include <string>    // for std::string
