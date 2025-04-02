@@ -18,6 +18,7 @@
  ************************************************************************/
 
 #pragma once
+#pragma warning(disable : 4244) // disable warning for conversion from 'size_t' to 'float', possible loss of data
 
 #include "list.h"     // because this->buckets[0] is a list
 #include "vector.h"   // because this->buckets is a vector
@@ -414,8 +415,8 @@ void unordered_set<T, Hash, E, A>::rehash(size_t numBuckets)
    if (numBuckets <= bucket_count())
       return;
 
-   // Create a new vector with the new number of buckets.
-   vector<list<T>>* newBuckets = new vector<list<T>>(numBuckets);
+   // Create a new vector with the new number of buckets
+   vector<list<T, A>> newBuckets(numBuckets);
 
    // Move all elements from the old buckets to the new buckets.
    for (auto itBucket = buckets.begin(); itBucket != buckets.end(); ++itBucket)
@@ -423,12 +424,12 @@ void unordered_set<T, Hash, E, A>::rehash(size_t numBuckets)
       for (auto itList = (*itBucket).begin(); itList != (*itBucket).end(); ++itList)
       {
          size_t iBucket = Hash()(*itList) % numBuckets;
-         (*newBuckets)[iBucket].push_back(*itList);
+         newBuckets[iBucket].push_back(std::move(*itList));
       }
    }
 
    // Swap the new buckets with the old buckets.
-   std::swap(buckets, *newBuckets);
+   std::swap(buckets, newBuckets);
 }
 
 /*****************************************
