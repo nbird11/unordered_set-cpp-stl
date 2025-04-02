@@ -8,6 +8,7 @@
  ************************************************************************/
 
 #pragma once
+#pragma warning(disable : 4312)  // disable warning on 'type cast': conversion from 'unsigned int' to 'custom::list<T,A>::Node *' of greater size
 
 #ifdef DEBUG
 

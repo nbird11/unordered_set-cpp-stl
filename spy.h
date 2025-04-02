@@ -222,3 +222,9 @@ inline void swap(Spy & s1, Spy & s2)
 {
    s1.swap(s2);
 }
+
+
+std::ostream& operator <<(std::ostream& out, const Spy& rhs)
+{
+   return out << "Spy(" << (rhs.empty() ? "NULL" : std::to_string(rhs.get())) << ")";
+}
