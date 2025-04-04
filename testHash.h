@@ -45,7 +45,7 @@ public:
       // Construct
       test_construct_default();
       test_construct_nonDefault11();
-      test_construct_nonDefaultIterator();  //
+      test_construct_nonDefaultIterator();
       test_construct_copyEmpty();
       test_construct_copyStandard();
       test_construct_nonDefaultHash();

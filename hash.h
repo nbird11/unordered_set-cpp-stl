@@ -63,7 +63,7 @@ public:
       (*this) = std::move(rhs);
    }
    template <class Iterator>
-   unordered_set(Iterator first, Iterator last) : unordered_set()
+   unordered_set(Iterator first, Iterator last) : numElements(0), maxLoadFactor(1.0), buckets(4)
    {
       reserve(last - first);
       for (Iterator it = first; it != last; ++it)
